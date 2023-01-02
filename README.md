@@ -1,2 +1,2 @@
-# Java Quantum Machine
+# JAQ
 Quantum computing SDK for Java
