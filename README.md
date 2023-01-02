@@ -1,2 +1,2 @@
-# qava
-Quantum computing Java SDK
+# Java Quantum Machine
+Quantum computing SDK for Java
