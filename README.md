@@ -10,7 +10,7 @@ class Program {
   public static void main(String[] args) {
     
     // Step 1. Build a quantum circuit
-    Qcircuit circ = Qcircuit.build(() -> {
+    Qcircuit circ = new Qcircuit(() -> {
       var q1 = new Qubit();
       var q2 = new Qubit();
     
