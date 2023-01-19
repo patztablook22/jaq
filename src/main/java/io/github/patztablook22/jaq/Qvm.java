@@ -9,7 +9,7 @@ import io.github.patztablook22.jaq.Qcircuit;
  *
  * */
 
-interface Qvm {
+public interface Qvm {
 
     /**
      * Runs the given Qcircuit once.

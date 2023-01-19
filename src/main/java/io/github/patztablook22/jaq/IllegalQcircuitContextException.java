@@ -5,5 +5,5 @@ package io.github.patztablook22.jaq;
  *
  * */
 
-class IllegalQcircuitContextException extends IllegalStateException {
+public class IllegalQcircuitContextException extends IllegalStateException {
 }
