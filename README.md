@@ -1,4 +1,4 @@
-# JAQ
+# Jaq
 
 Quantum computing engine for Java based on a simple life cycle:
 
@@ -32,3 +32,27 @@ class Program {
   }
 }
 ```
+
+## Visualization
+
+Especially when debugging, it is often useful to see the quantum circuit's diagram. This can be done simply:
+
+```java
+Qcircuit circ = /* ... */;
+System.out.println(circ);
+```
+
+Output:
+
+```
+0:   ─H──H──H───────────X───────────M─
+1:   ─┴──┊──┊──H──H────────X────────┼─
+2:   ────┴──┊──┴──┊──H────────X─────┼─
+3:   ───────┴─────┴──┴───────────X──┴─
+```
+
+## Quantum virtual machine
+
+Jaq quantum circuits are backend-agnostic. Implementations of `Qvm`:
+
+- `SimpleSimulator` - simulates the quantum circuit using linear algebra on the CPU
