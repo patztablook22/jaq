@@ -1,9 +1,9 @@
-package io.github.patztablook22.jaq.gates;
+package io.github.patztablook22.jaq.ops;
 
-import io.github.patztablook22.jaq.Qgate;
+import io.github.patztablook22.jaq.Qop;
 
 
-public class Measure implements Qgate {
+public class Measure implements Qop {
     int[] ids;
 
     public Measure(int id) {

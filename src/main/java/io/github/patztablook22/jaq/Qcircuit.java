@@ -5,19 +5,19 @@ import java.util.Iterator;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 import io.github.patztablook22.jaq.QcircuitTracer;
-import io.github.patztablook22.jaq.Qgate;
+import io.github.patztablook22.jaq.Qop;
 
 
 /**
- * A quantum circuit. Stores an ordered list of its quantum gates.
+ * A quantum circuit. Stores an ordered list of operations on qubits.
  *
  * */
 
-public class Qcircuit implements Iterable<Qgate> {
+public class Qcircuit implements Iterable<Qop> {
 
     private int qubitsTotal;
     private int measurementsTotal;
-    private List<Qgate> gates;
+    private List<Qop> ops;
 
     /**
      * Builder method to be used when subclassing Qcircuit
@@ -38,7 +38,7 @@ public class Qcircuit implements Iterable<Qgate> {
         var tracer = QcircuitTracer.trace(build);
 
         qubitsTotal = tracer.getQubits();
-        gates = tracer.getGates();
+        ops = tracer.getOps();
         measurementsTotal = tracer.getMeasurements();
     }
 
@@ -51,7 +51,7 @@ public class Qcircuit implements Iterable<Qgate> {
         var tracer = QcircuitTracer.trace(this::build);
 
         qubitsTotal = tracer.getQubits();
-        gates = tracer.getGates();
+        ops = tracer.getOps();
         measurementsTotal = tracer.getMeasurements();
     }
 
@@ -75,48 +75,48 @@ public class Qcircuit implements Iterable<Qgate> {
     }
 
     /**
-     * @return An iterator over the quantum circuit's gates.
+     * @return An iterator over the quantum circuit's ops.
      * Topological order - can be considered a task queue.
      *
      * */
 
     @Override
-    public Iterator<Qgate> iterator() {
-        return new Iterator<Qgate>() {
+    public Iterator<Qop> iterator() {
+        return new Iterator<Qop>() {
             private int index = 0;
 
             @Override
             public boolean hasNext() {
-                return index < gates.size();
+                return index < ops.size();
             }
 
             @Override
-            public Qgate next() {
+            public Qop next() {
                 if (!hasNext())
                     throw new NoSuchElementException();
 
-                return gates.get(index++);
+                return ops.get(index++);
             }
         };
     }
 
     /**
-     * @return The number of gates in the quantum circuit.
+     * @return The number of ops in the quantum circuit.
      *
      * */
 
     public int length() {
-        return gates.size();
+        return ops.size();
     }
 
     /**
-     * @param index Index of the quantum gate.
-     * @return The quantum gate with the given index.
+     * @param index Index of the op.
+     * @return The op with the given index.
      *
      * */
 
-    public Qgate get(int index) {
-        return gates.get(index);
+    public Qop get(int index) {
+        return ops.get(index);
     }
 
     /**
@@ -131,7 +131,7 @@ public class Qcircuit implements Iterable<Qgate> {
     public String toString() {
         var sb = new StringBuilder();
         int qubitsDigits = (int) Math.log10(qubitsTotal + 0.5);
-        int minGateWidth = 3;
+        int minOpWidth = 3;
 
         String labels[] = new String[length()];
         for (int i = 0; i < length(); i++)
@@ -152,11 +152,11 @@ public class Qcircuit implements Iterable<Qgate> {
             sb.append("  ");
 
             for (int g = 0; g < length(); g++) {
-                Qgate gate = get(g);
+                Qop op = get(g);
                 boolean isAbove = false, isBelow = false; 
                 boolean isOperand = false, isMainOperand = false;
 
-                for (int operand: gate) {
+                for (int operand: op) {
                     if (operand > q) 
                         isBelow = true;
 
@@ -167,11 +167,11 @@ public class Qcircuit implements Iterable<Qgate> {
                         isOperand = true;
                 }
 
-                if (gate.arity() > 0 && gate.operand(0) == q)
+                if (op.arity() > 0 && op.operand(0) == q)
                     isMainOperand = true;
 
                 if (isMainOperand) {
-                    int pad = Math.max(minGateWidth - labels[g].length(), 2);
+                    int pad = Math.max(minOpWidth - labels[g].length(), 2);
                     int padLeft = pad / 2;
 
                     for (int i = 0; i < padLeft; i++)
@@ -183,7 +183,7 @@ public class Qcircuit implements Iterable<Qgate> {
                         sb.append("─");
 
                 } else {
-                    int pad = Math.max(minGateWidth, labels[g].length() + 2) - 1;
+                    int pad = Math.max(minOpWidth, labels[g].length() + 2) - 1;
                     int padLeft = pad / 2;
 
                     for (int i = 0; i < padLeft; i++)

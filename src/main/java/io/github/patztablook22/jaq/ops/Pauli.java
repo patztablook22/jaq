@@ -1,9 +1,9 @@
-package io.github.patztablook22.jaq.gates;
+package io.github.patztablook22.jaq.ops;
 
-import io.github.patztablook22.jaq.Qgate;
+import io.github.patztablook22.jaq.Qop;
 
 
-abstract class Pauli implements Qgate {
+abstract class Pauli implements Qop {
     private int id;
 
     public Pauli(int id) {

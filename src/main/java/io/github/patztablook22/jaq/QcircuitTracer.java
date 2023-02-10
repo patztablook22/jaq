@@ -1,12 +1,12 @@
 package io.github.patztablook22.jaq;
 
 import java.io.Closeable;
-import io.github.patztablook22.jaq.Qgate;
+import io.github.patztablook22.jaq.Qop;
 import java.util.List;
 import java.util.ArrayList;
 
 import io.github.patztablook22.jaq.IllegalQcircuitContextException;
-import io.github.patztablook22.jaq.gates.Measure;
+import io.github.patztablook22.jaq.ops.Measure;
 
 
 /**
@@ -22,7 +22,7 @@ class QcircuitTracer implements Closeable {
 
     private int qubits = 0;
     private int measurements = 0;
-    private List<Qgate> gates = new ArrayList<>();
+    private List<Qop> ops = new ArrayList<>();
 
     /**
      * Trace the provided method. Only one tracing can occur at a time,
@@ -63,12 +63,12 @@ class QcircuitTracer implements Closeable {
     }
 
     /**
-     * @return The total number of Qgates traced.
+     * @return The total number of Qops traced.
      *
      * */
 
-    public List<Qgate> getGates() {
-        return gates;
+    public List<Qop> getOps() {
+        return ops;
     }
 
     /**
@@ -128,18 +128,18 @@ class QcircuitTracer implements Closeable {
     }
 
     /**
-     * Adds a quantum gate to the trace.
-     * @param gate The quantum gate to add.
+     * Adds a quantum op to the trace.
+     * @param op The quantum op to add.
      *
      * */
 
-    public void addGate(Qgate gate) {
+    public void addOp(Qop op) {
         if (currentTracer != this)
             throw new IllegalQcircuitContextException();
 
-        gates.add(gate);
+        ops.add(op);
 
-        if (gate instanceof Measure)
-            measurements += gate.arity();
+        if (op instanceof Measure)
+            measurements += op.arity();
     }
 }

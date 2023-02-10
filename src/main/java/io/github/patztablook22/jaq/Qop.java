@@ -5,15 +5,15 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * A quantum gate. Stores the IDs of qubits it operates on.
+ * A quantum operation. Stores the IDs of qubits it operates on.
  * The ordering respects the semantics of the operands.
  *
  * */
 
-public interface Qgate extends Iterable<Integer> {
+public interface Qop extends Iterable<Integer> {
 
     /**
-     * @return The number of qubits the quntum gate operates on.
+     * @return The number of qubits the op works with.
      *
      * */
 
@@ -28,14 +28,14 @@ public interface Qgate extends Iterable<Integer> {
     int operand(int index);
 
     /**
-     * @return A label of the quantum gate to be used when e.g. printing.
+     * @return A label of the op to be used when e.g. printing.
      *
      * */
 
     String label();
 
     /**
-     * @return An iterator over the IDs of the quantum gate's operands.
+     * @return An iterator over the IDs of the op's operands.
      *
      * */
 

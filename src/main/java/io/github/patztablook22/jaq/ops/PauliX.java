@@ -1,6 +1,6 @@
-package io.github.patztablook22.jaq.gates;
+package io.github.patztablook22.jaq.ops;
 
-import io.github.patztablook22.jaq.gates.Pauli;
+import io.github.patztablook22.jaq.ops.Pauli;
 
 
 public class PauliX extends Pauli {

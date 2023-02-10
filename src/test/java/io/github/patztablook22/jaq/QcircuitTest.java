@@ -38,7 +38,7 @@ public class QcircuitTest {
 
             for (int i = 0; i < qs.length; i++)
                 for (int j = i + 1; j < qs.length; j++)
-                    qs[i].hadamard(qs[j]);
+                    qs[i].hadamard();
 
             for (var q: qs)
                 q.measure();

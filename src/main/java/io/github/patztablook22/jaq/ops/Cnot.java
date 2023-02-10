@@ -1,20 +1,24 @@
-package io.github.patztablook22.jaq.gates;
+package io.github.patztablook22.jaq.ops;
 
-import io.github.patztablook22.jaq.Qgate;
+import io.github.patztablook22.jaq.Qop;
 
 
-public class Swap implements Qgate {
-    private int id1;
-    private int id2;
+public class Cnot implements Qop {
+    private int id1 = -1;
+    private int id2 = -1;
 
-    public Swap(int id1, int id2) {
+    public Cnot(int id1) {
+        this.id1 = id1;
+    }
+
+    public Cnot(int id1, int id2) {
         this.id1 = id1;
         this.id2 = id2;
     }
 
     @Override
     public int arity() {
-        return 2;
+        return id2 == -1 ? 1 : 2;
     }
 
     @Override 
@@ -27,6 +31,6 @@ public class Swap implements Qgate {
 
     @Override
     public String label() {
-        return "S";
+        return "(+)";
     }
 }

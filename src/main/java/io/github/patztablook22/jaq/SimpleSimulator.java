@@ -1,8 +1,9 @@
 package io.github.patztablook22.jaq;
 
+import java.util.HashMap;
 import io.github.patztablook22.jaq.Qcircuit;
 import io.github.patztablook22.jaq.Qubit;
-import io.github.patztablook22.jaq.Qgate;
+import io.github.patztablook22.jaq.Qop;
 
 
 /**
@@ -26,19 +27,23 @@ public class SimpleSimulator implements Qvm {
     private static class Executor {
 
         private Qcircuit circuit;
-        private byte[] quantumState;
+        private double[] stateReal;
+        private double[] stateImag;
 
         public Executor(Qcircuit circuit) {
             this.circuit = circuit;
-            int spaceDim = 2 << circuit.qubits();
-            quantumState = new byte[spaceDim];
+            if (circuit.qubits() == 0)
+                return;
+
+            int spaceDim = 2 << (circuit.qubits() - 1);
+            stateReal = new double[spaceDim];
+            stateImag = new double[spaceDim];
         }
 
         public byte[] run() {
             byte[] measurements = new byte[circuit.measurements()];
-
-            // TODO
-
+            for (Qop op: circuit) {
+            }
             return measurements;
         }
     }

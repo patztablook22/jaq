@@ -1,9 +1,9 @@
-package io.github.patztablook22.jaq.gates;
+package io.github.patztablook22.jaq.ops;
 
-import io.github.patztablook22.jaq.Qgate;
+import io.github.patztablook22.jaq.Qop;
 
 
-public class Toffoli implements Qgate {
+public class Toffoli implements Qop {
     private int id1, id2, id3;
 
     public Toffoli(int id1, int id2, int id3) {

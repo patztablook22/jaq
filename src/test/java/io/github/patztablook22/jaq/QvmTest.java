@@ -13,18 +13,11 @@ public class QvmTest {
     class TestCircuit extends Qcircuit {
         @Override
         protected void build() {
-            Qubit[] qs = new Qubit[4];
-            for (int i = 0; i < qs.length; i++)
-                qs[i] = new Qubit();
-
-            for (int i = 0; i < qs.length; i++)
-                for (int j = i + 1; j < qs.length; j++)
-                    qs[i].hadamard(qs[j]);
-            
-            for (var q: qs)
-                q.pauliX();
-
-            Qubit.measureJoint(qs);
+            var q1 = new Qubit();
+            var q2 = new Qubit();
+            q1.hadamard().cnot(q2);
+            q1.measure();
+            q2.measure();
         }
     }
 

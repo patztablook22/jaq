@@ -1,9 +1,9 @@
-package io.github.patztablook22.jaq.gates;
+package io.github.patztablook22.jaq.ops;
 
-import io.github.patztablook22.jaq.Qgate;
+import io.github.patztablook22.jaq.Qop;
 
 
-public class Phase implements Qgate {
+public class Phase implements Qop {
     private int id;
     double phi;
 
