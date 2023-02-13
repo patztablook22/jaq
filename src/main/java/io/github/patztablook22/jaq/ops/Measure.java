@@ -1,35 +1,32 @@
 package io.github.patztablook22.jaq.ops;
 
-import io.github.patztablook22.jaq.Qop;
+import io.github.patztablook22.jaq.Qnode;
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class Measure implements Qop {
-    int[] ids;
+public class Measure implements Qnode {
+    List<Integer> source = new ArrayList<>();
+    List<Integer> target = new ArrayList<>();
 
-    public Measure(int id) {
-        int[] temp = {id};
-        ids = temp;
+    public Measure(int q, int c) {
+        source.add(q);
+        target.add(c);
     }
 
-    public Measure(int[] ids) {
-        this.ids = ids;
+    public List<Integer> qubits() {
+        return source;
     }
 
-    @Override
-    public int arity() {
-        return ids.length;
+    public List<Integer> cbits() {
+        return target;
     }
 
-    @Override 
-    public int operand(int idx) {
-        if (idx < 0 || idx >= arity())
-            throw new IndexOutOfBoundsException();
-
-        return ids[idx];
+    public int qubit() {
+        return source.get(0);
     }
 
-    @Override
-    public String label() {
-        return "M";
+    public int cbit() {
+        return target.get(0);
     }
 }

@@ -1,36 +1,29 @@
 package io.github.patztablook22.jaq.ops;
 
-import io.github.patztablook22.jaq.Qop;
+import io.github.patztablook22.jaq.Qnode;
+import io.github.patztablook22.jaq.Qcircuit;
 
+import java.util.List;
+import java.util.ArrayList;
 
-public class Cnot implements Qop {
-    private int id1 = -1;
-    private int id2 = -1;
+public class Cnot implements Qnode {
+    List<Integer> operands = new ArrayList<>();
 
-    public Cnot(int id1) {
-        this.id1 = id1;
-    }
-
-    public Cnot(int id1, int id2) {
-        this.id1 = id1;
-        this.id2 = id2;
-    }
-
-    @Override
-    public int arity() {
-        return id2 == -1 ? 1 : 2;
-    }
-
-    @Override 
-    public int operand(int idx) {
-        if (idx < 0 || idx >= arity())
-            throw new IndexOutOfBoundsException();
-
-        return idx == 0 ? id1 : id2;
+    public Cnot(int controlQubit, int targetQubit) {
+        operands.add(controlQubit);
+        operands.add(targetQubit);
     }
 
     @Override
-    public String label() {
-        return "(+)";
+    public List<Integer> qubits() {
+        return operands;
     }
+
+    public int controlQubit() {
+        return operands.get(0);
+    }
+ 
+    public int targetQubit() {
+        return operands.get(1);
+    } 
 }

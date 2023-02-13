@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.ArrayList;
 
 
-public class PauliX implements Qnode {
+public class RotateX implements Qnode {
+    private double angle;
     private List<Integer> operands = new ArrayList<>();
 
-    public PauliX(int qubit) {
+    public RotateX(int qubit, double angle) {
+        this.angle = angle;
         operands.add(qubit);
     }
 

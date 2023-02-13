@@ -1,50 +1,39 @@
 package io.github.patztablook22.jaq;
 
 import static org.junit.Assert.*;
-
 import org.junit.Test;
 import io.github.patztablook22.jaq.Qcircuit;
-import io.github.patztablook22.jaq.Qubit;
+import io.github.patztablook22.jaq.backends.SimpleSimulator;
 
 
 public class QcircuitTest {
 
-    class TestCircuit extends Qcircuit {
-        @Override
-        protected void build() {
-            double phi = 3.1314;
-            Qubit[] qs = new Qubit[4];
-            for (int i = 0; i < qs.length; i++)
-                qs[i] = new Qubit();
+    class MyCirc extends Qcircuit {
+        class Inner2 extends Qcircuit {
+            Inner2() {
+            }
+        }
 
-            for (var q: qs)
-                q.phase(phi);
+        class InnerAsdf1 extends Qcircuit {
+            InnerAsdf1() {
+            }
+        }
+
+        MyCirc() {
+            hadamard(0, 1, 2);
+            cnot(0, 1);
+
+            hadamard(0);
+            cnot(1, 2);
         }
     }
 
     @Test
-    public void subclassingApi() {
-        var circ = new TestCircuit();
-        //System.out.println(circ);
-    }
+    public void test() {
+        MyCirc circ = new MyCirc();
+        System.out.println(circ);
 
-    @Test
-    public void functionalApi() {
-
-        var circ = new Qcircuit(() -> {
-            Qubit[] qs = new Qubit[6];
-            for (int i = 0; i < qs.length; i++)
-                qs[i] = new Qubit();
-
-            for (int i = 0; i < qs.length; i++)
-                for (int j = i + 1; j < qs.length; j++)
-                    qs[i].hadamard();
-
-            for (var q: qs)
-                q.measure();
-        });
-
-
-        //System.out.println(circ);
+        Qvm backend = new SimpleSimulator();
+        backend.run(circ);
     }
 }

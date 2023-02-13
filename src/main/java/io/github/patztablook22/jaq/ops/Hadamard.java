@@ -1,30 +1,22 @@
 package io.github.patztablook22.jaq.ops;
 
-import io.github.patztablook22.jaq.Qop;
+import io.github.patztablook22.jaq.Qnode;
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class Hadamard implements Qop {
-    private int id;
+public class Hadamard implements Qnode {
+    List<Integer> operands = new ArrayList<>();
 
-    public Hadamard(int id) {
-        this.id = id;
+    public Hadamard(int q) {
+        operands.add(q);
     }
 
-    @Override
-    public int arity() {
-        return 1;
+    public List<Integer> qubits() {
+        return operands;
     }
 
-    @Override 
-    public int operand(int idx) {
-        if (idx != 0)
-            throw new IndexOutOfBoundsException();
-
-        return id;
-    }
-
-    @Override
-    public String label() {
-        return "H";
+    public int qubit() {
+        return operands.get(0);
     }
 }
