@@ -17,7 +17,7 @@ class Program {
     var circ = new Qcircuit() {{
       hadamard(0);
       cnot(0, 1);
-      measure(0, 0);
+      measure(1, 0);
     }}
     
     // Step 2. Choose a QVM backend.
@@ -39,7 +39,15 @@ Qcircuit circ = /* ... */;
 System.out.println(circ);
 ```
 
-Output:
+Output for the circuit in the example code:
+
+```
+q0:  ─H─┬───
+q1:  ───+─M─
+c0:  ═════╚═
+```
+
+Or a more complex circuit, with some nested subcircuits: 
 
 ```
 q0:  ─H───────────────────┌──────────┐─
