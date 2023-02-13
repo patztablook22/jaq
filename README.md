@@ -18,7 +18,7 @@ class Program {
       hadamard(0);
       cnot(0, 1);
       measure(1, 0);
-    }}
+    }};
     
     // Step 2. Choose a QVM backend.
     Qvm backend = new SimpleSimulator();
