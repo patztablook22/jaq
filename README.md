@@ -14,14 +14,11 @@ class Program {
   public static void main(String[] args) {
     
     // Step 1. Build a quantum circuit.
-    Qcircuit circ = new Qcircuit(() -> {
-      var q1 = new Qubit();
-      var q2 = new Qubit();
-    
-      q2.hadamard();
-      q1.hadamard(q2).cnot();
-      q1.measure();
-    });
+    var circ = new Qcircuit() {{
+      hadamard(0);
+      cnot(0, 1);
+      measure(0, 0);
+    }}
     
     // Step 2. Choose a QVM backend.
     Qvm backend = new SimpleSimulator();
@@ -45,10 +42,14 @@ System.out.println(circ);
 Output:
 
 ```
-0:   ─H──H──H───────────X───────────M─
-1:   ─┴──┊──┊──H──H────────X────────┼─
-2:   ────┴──┊──┴──┊──H────────X─────┼─
-3:   ───────┴─────┴──┴───────────X──┴─
+q0:  ─H───────────────────┌──────────┐─
+q1:  ─H─Rx─┬─X────────────┤0  Inner2 ├─
+q2:  ─H────┊─┬────────M─X─┤1         ├─
+q3:  ─H────+─+────────║─X─└──────────┘─
+q4:  ─┌─────────────┐─║────────────────
+q5:  ─┤0  InnerA... ├─║────────────────
+c0:  ═╡0            ╞═║════════════════
+c1:  ═└─────────────┘═╚════════════════
 ```
 
 ## Quantum virtual machine
