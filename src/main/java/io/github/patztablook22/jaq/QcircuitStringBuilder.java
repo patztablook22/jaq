@@ -100,8 +100,14 @@ class QcircuitStringBuilder {
         concatenateVerticalBlocks();
 
         var sb = new StringBuilder();
-        for (var buffer: buffers)
-            sb.append(buffer).append('\n');
+
+        for (int i = 0; i < buffers.length; i++) {
+            if (i == 0 || i == buffers.length - 1)
+                if (buffers[i].toString().isBlank())
+                    continue;
+
+            sb.append(buffers[i]).append('\n');
+        }
 
         return sb.toString();
     }

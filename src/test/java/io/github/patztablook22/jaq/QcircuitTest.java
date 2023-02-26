@@ -7,33 +7,23 @@ import io.github.patztablook22.jaq.backends.SimpleSimulator;
 
 
 public class QcircuitTest {
-
-    class MyCirc extends Qcircuit {
-        class Inner2 extends Qcircuit {
-            Inner2() {
-            }
-        }
-
-        class InnerAsdf1 extends Qcircuit {
-            InnerAsdf1() {
-            }
-        }
-
-        MyCirc() {
-            hadamard(0, 1, 2);
-            cnot(0, 1);
-
-            hadamard(0);
-            cnot(1, 2);
-        }
-    }
-
     @Test
     public void test() {
-        MyCirc circ = new MyCirc();
+        var circ = new Qcircuit() {{
+            hadamard(0);
+            cnot(0, 1);
+            measure(0, 0);
+            measure(1, 1);
+        }};
         System.out.println(circ);
 
         Qvm backend = new SimpleSimulator();
-        backend.run(circ);
+        byte[][] results = backend.run(circ, 10);
+
+        for (int i = 0; i < results.length; i++) {
+            for (int j = 0; j < results[i].length; j++)
+                System.out.print(results[i][j]);
+            System.out.println();
+        }
     }
 }

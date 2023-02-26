@@ -1,5 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.patztablook22.jaq</groupId>
   <artifactId>jaq</artifactId>
@@ -7,6 +8,7 @@
   <version>1.0-SNAPSHOT</version>
   <name>jaq</name>
   <url>http://maven.apache.org</url>
+
   <properties>
     <java.version>11</java.version>
     <maven.compiler.source>11</maven.compiler.source>
@@ -14,6 +16,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -22,4 +25,20 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.5.0</version>
+        <configuration>
+            <header>&lt;script src=&quot;https://polyfill.io/v3/polyfill.min.js?features=es6&quot;&gt;&lt;/script&gt;
+                    &lt;script async src=&quot;https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js&quot;&gt;&lt;/script&gt;</header>
+            <additionalOptions>--allow-script-in-comments</additionalOptions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>

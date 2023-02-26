@@ -1,6 +1,6 @@
 package io.github.patztablook22.jaq;
 
-import io.github.patztablook22.jaq.ops.*;
+import io.github.patztablook22.jaq.nodes.*;
 import java.util.Arrays;
 
 
@@ -25,38 +25,50 @@ class QnodeStringBuilder {
         repeat(" ", length - s.length());
     }
 
-    private int min(Iterable<Integer> iterable) {
+    private int min(int[] arr) {
         int min = Integer.MAX_VALUE / 2;
-        for (int i: iterable)
+        for (int i: arr)
             min = Math.min(min, i);
         return min;
     }
 
-    private int max(Iterable<Integer> iterable) {
+    private int max(int[] arr) {
         int max = Integer.MIN_VALUE / 2;
-        for (int i: iterable)
+        for (int i: arr)
             max = Math.max(max, i);
         return max;
+    }
+
+    private boolean contains(int[] arr, int val) {
+        for (int i: arr)
+            if (i == val)
+                return true;
+        return false;
+    }
+
+    private int indexOf(int[] arr, int val) {
+        for (int i = 0; i < arr.length; i++)
+            if (arr[i] == val)
+                return i;
+        return -1;
     }
 
     private void append(Object o) {
         sb.append(o);
     }
 
-    private void dump(Hadamard node) {
-        repeat("\n", node.qubit() + 1);
-        append("H");
-    }
-
     private void dump(Subcircuit node) {
+        if (node.getQubits().length == 0 && node.getCbits().length == 0)
+            return;
+
         String name = node.getCircuit().getName();
 
-        int firstRow = Math.min(min(node.qubits()), min(node.cbits()) + qubits);
-        int lastRow = Math.max(max(node.qubits()), max(node.cbits()) + qubits);
+        int firstRow = Math.min(min(node.getQubits()), min(node.getCbits()) + qubits);
+        int lastRow = Math.max(max(node.getQubits()), max(node.getCbits()) + qubits);
         int height = lastRow - firstRow + 2;
 
-        int argPosWidth = Math.max(Integer.toString(node.qubits().size()).length(),
-                                   Integer.toString(node.cbits().size()).length()) + 2;
+        int argPosWidth = Math.max(Integer.toString(node.getQubits().length).length(),
+                                   Integer.toString(node.getCbits().length).length()) + 2;
 
         int nameWidth = Math.min(name.length(), 2 * height + 3);
         int width = argPosWidth + nameWidth + 1;
@@ -79,12 +91,12 @@ class QnodeStringBuilder {
         for (int i = firstRow; i <= lastRow; i++) {
             String argPos;
             char borderLeft, borderRight;
-            if (i < qubits && node.qubits().contains(i)) {
-                argPos = Integer.toString(node.qubits().indexOf(i));
+            if (i < qubits && contains(node.getQubits(), i)) {
+                argPos = Integer.toString(indexOf(node.getQubits(), i));
                 borderLeft = '┤';
                 borderRight = '├';
-            } else if (node.cbits().contains(i - qubits)) {
-                argPos = Integer.toString(node.cbits().indexOf(i - qubits));
+            } else if (contains(node.getCbits(), i - qubits)) {
+                argPos = Integer.toString(indexOf(node.getCbits(), i - qubits));
                 borderLeft = '╡';
                 borderRight = '╞';
             } else {
@@ -108,7 +120,7 @@ class QnodeStringBuilder {
     }
 
     private void dump(Cnot node) {
-        int control = node.controlQubit(), target = node.targetQubit();
+        int control = node.getControl(), target = node.getTarget();
         repeat("\n", Math.min(control, target) + 1);
         if (target < control) {
             append("+\n");
@@ -122,10 +134,12 @@ class QnodeStringBuilder {
     }
 
     private void dump(Measure node) {
-        repeat("\n", node.qubit() + 1);
+        //append("\n");
+        //repeat("─\n", node.getSource());
+        repeat("\n", node.getSource() + 1);
         append("M\n");
-        repeat("║\n", qubits - node.qubit() - 1);
-        repeat("║\n", node.cbit());
+        repeat("║\n", qubits - node.getSource() - 1);
+        repeat("║\n", node.getTarget());
         append("╚\n");
     }
 
@@ -137,7 +151,7 @@ class QnodeStringBuilder {
     public String build() {
 
         if (node instanceof Hadamard) {
-            dumpSingleQubit(((Hadamard) node).qubit(), "H");
+            dumpSingleQubit(((Hadamard) node).getQubit(), "H");
         } else if (node instanceof Subcircuit) {
             dump((Subcircuit) node);
         } else if (node instanceof Cnot) {
@@ -145,9 +159,9 @@ class QnodeStringBuilder {
         } else if (node instanceof Measure) {
             dump((Measure) node);
         } else if (node instanceof RotateX) {
-            dumpSingleQubit(((RotateX) node).qubit(), "Rx");
+            dumpSingleQubit(((RotateX) node).getQubit(), "Rx");
         } else if (node instanceof PauliX) {
-            dumpSingleQubit(((PauliX) node).qubit(), "X");
+            dumpSingleQubit(((PauliX) node).getQubit(), "X");
         }
 
         return sb.toString();
