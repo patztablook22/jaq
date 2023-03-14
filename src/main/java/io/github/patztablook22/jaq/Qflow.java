@@ -8,9 +8,23 @@ import java.util.Stack;
 
 
 /**
- * Sequential {@link Qop} iterator over a {@link Qcircuit}.
+ * Sequential {@link Qop} feed from given {@link Qcircuit}.
  *
+ * <p>
+ *   {@code Qflow} should be used to iterate over the {@link Qop atomic operations}
+ *   of a {@link Qcircuit} contextualized globally. 
  *
+ *   In pracitce, this amounts to
+ *   receiving the totally inlined version of a {@link Qcircuit}, with all other
+ *   {@code Qcircuits} nested in it through 
+ *   {@link io.github.patztablook22.jaq.nodes.Subcircuit} begin recursively
+ *   inlined into the outer-most {@code Qcircuit}.
+ *
+ *   The operations are fed in chronological/topological order.
+ *   This is helpful for various {@code Qcircuit} executors / transpilers,
+ *   since the {@code Qflow} strips off all the higher-level API complexities 
+ *   of the {@code Qcircuit} and gives back the most basic representation.
+ * </p>
  *
  * */
 public abstract class Qflow {
@@ -18,26 +32,34 @@ public abstract class Qflow {
     private Stack<int[]> qubitScopes = new Stack<>();
     private Stack<int[]> cbitScopes = new Stack<>();
 
+    /**
+     * Constructs a {@code Qflow} from given {@link Qcircuit}.
+     * Note that the underlying {@code Qcircuit} is never
+     * modified by the {@code Qflow}.
+     *
+     * @param circuit the underlying Qcircuit
+     *
+     * */
     protected Qflow(Qcircuit circuit) {
         this.circuit = circuit;
     }
 
-    public Qcircuit getCircuit() {
+    /**
+     * Returns the underlying {@link Qcircuit}.
+     *
+     * @return the underlying Qcircuit
+     *
+     * */
+    public final Qcircuit getCircuit() {
         return circuit;
     }
 
-    public byte[] run() {
-        before();
+    /**
+     * Runs the operation feed.
+     *
+     * */
+    public void flow() {
         runRecursive(circuit);
-        after();
-        return returnData();
-    }
-
-    public byte[][] run(int shots) {
-        byte[][] data = new byte[shots][];
-        for (int i = 0; i < shots; i++)
-            data[i] = run();
-        return data;
     }
 
     private int[] select(int[] from, int[] indices) {
@@ -71,7 +93,7 @@ public abstract class Qflow {
                 cbitScopes.pop();
 
             } else if (node instanceof Qop) {
-                runOp((Qop) node);
+                feed((Qop) node);
             }
         }
     }
@@ -90,7 +112,14 @@ public abstract class Qflow {
             return cbitScopes.peek()[c];
     }
 
-    protected void runOp(Qop op) {
+    /**
+     * Recives the next {@link Qop} and feeds it forward into
+     * the dedicated method.
+     *
+     * @param op the operation being fed
+     *
+     * */
+    protected void feed(Qop op) {
         if (op instanceof Hadamard) {
             var h = (Hadamard) op;
             int qubit = scopedQubit(h.getQubit());
@@ -118,17 +147,46 @@ public abstract class Qflow {
         }
     }
 
-    protected abstract byte[] returnData();
-
-    protected void before() {
-    }
-
-    protected void after() {
-    }
-
+    /**
+     * {@link io.github.patztablook22.jaq.nodes.Hadamard} gate.
+     *
+     * @param qubit the gate's qubit
+     *
+     * */
     protected abstract void hadamard(int qubit);
+
+    /**
+     * {@link io.github.patztablook22.jaq.nodes.Measure} operations.
+     *
+     * @param source the source qubit
+     * @param target the target classical bit
+     *
+     * */
     protected abstract void measure(int source, int target);
+
+    /**
+     * {@link io.github.patztablook22.jaq.nodes.Cnot} gate.
+     *
+     * @param control the control qubit
+     * @param target the target qubit
+     *
+     * */
     protected abstract void cnot(int control, int target);
+
+    /**
+     * {@link io.github.patztablook22.jaq.nodes.PauliX} gate.
+     *
+     * @param qubit the gate's qubit
+     *
+     * */
     protected abstract void pauliX(int qubit);
+
+    /**
+     * {@link io.github.patztablook22.jaq.nodes.RotateX} gate.
+     *
+     * @param qubit the gate's qubit
+     * @param angle the rotation angle
+     *
+     * */
     protected abstract void rotateX(int qubit, double angle);
 }

@@ -1,0 +1,216 @@
+/* *
+ *
+ * I am using https://github.com/athaun/Javadoc-stylesheet/.
+ *
+ * Cheers!
+ *
+ */
+
+/* Created with Javadoc-Themer built by Nishant */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+@import url(//db.onlinewebfonts.com/c/1db29588408eadbd4406aae9238555eb?family=Consolas);
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk&family=Roboto&family=Source+Code+Pro&display=swap');
+
+body {
+    background-color: #ffffff;
+    color: #141414;
+    font-size: 76%;
+    margin: 0;
+}
+
+body, section, main, p, td, tr, div.block {
+    font-family: 'Roboto', sans-serif;
+}
+
+body > main {
+    max-width: 1080px;
+    min-width: 800px;
+    width: 90%;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 9px 0px;
+    border-radius: 5px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+body > header > nav > div.fixedNav > div.topNav {
+    background: white;
+}
+
+body > header > nav > div.fixedNav > div.topNav > ul.navList {
+    padding: 0;
+}
+
+footer {
+}
+
+footer > nav {
+    display: none;
+}
+
+body > header > nav > div.fixedNav > div.topNav > ul.navList * {
+    color: black;
+    text-transform: none;
+}
+
+body > header > nav > div.fixedNav > div.topNav > ul.navList > li {
+}
+
+body > header > nav > div.fixedNav > div.topNav > ul.navList > .navBarCell1Rev {
+    background: #846cea88;
+}
+
+body > header > nav > div.fixedNav > div.subNav > ul.navList > li > a {
+}
+
+body > header > nav > div.fixedNav > div.subNav > div > ul.subNavList > li > a {
+}
+
+caption > span {
+    background: #846cea88;
+}
+
+table > tbody:first-child > tr {
+    background: red;
+}
+
+table > tbody > tr.altColor {
+    background: white;
+}
+
+table > tbody > tr.altColor > th {
+    background: white;
+}
+
+table > tbody > tr.altColor > th > a {
+    color: #434c5d;
+}
+
+table > tbody > tr.altColor > th > code > a {
+    color: #434c5d;
+}
+
+table > tbody > tr.altColor > td > code > a {
+    color: #434c5d;
+}
+
+table > tbody > tr.rowColor {
+    background: #eee;
+}
+
+table > tbody > tr.rowColor > th {
+    background: #eee;
+}
+
+table > tbody > tr.rowColor > th > a {
+    color: #434c5d;
+}
+
+table > tbody > tr.rowColor > th > code > a {
+    color: #434c5d;
+}
+
+table > tbody > tr.rowColor > td > code > a {
+    color: #434c5d;
+}
+
+div.header > h1 {
+    display: none
+}
+
+
+#navbar-top-firstrow > li:child():not(a) {
+    background: red;
+}
+
+#navbar-top-firstrow > li {
+    color: cornflowerblue;
+}
+
+.nav-bar-cell1-rev {
+    background-color: rgba(0, 0, 0, 0);
+    font-weight: bold;
+}
+
+/* A - LINKS */
+a:link, a, #navbar-top-firstrow > li > a{
+    color: cornflowerblue;
+    font-weight: normal;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0);
+}
+
+a:link:visited, a:visited {
+    color: cornflowerblue;
+    text-decoration: none;
+}
+
+a:link:focus, a:focus {
+    color: cornflowerblue;
+    font-weight: bold;
+    text-decoration: none;
+}
+a:link:active, a:active {
+    color: #4c6b87;
+    text-decoration: none;
+}
+a[name] {
+    color: #141414;
+}
+a[name]:hover {
+    color: #141414;
+    text-decoration: none;
+}
+
+.subNav {
+    border-top: 1px solid #dfe3e5;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 9px 0px;
+    float: left;
+    overflow: hidden;
+    width: 100%;
+    
+}
+
+#search {
+    background: white;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid #dfe3e5;
+    color: #a3a5a7;
+    margin-right: 20px;
+    /* box-shadow: rgb(0 0 0 / 5%) 0px 6px 9px 0px; */
+}
+
+#reset {
+    display:none;
+}
+
+ul.navListSearch li label {
+    display: none;
+}
+
+
+.type-signature, .hljs {
+    display: none;
+    background: #f5f8fa; 
+    padding: 10px;
+    border-radius:6px; 
+    font-family: 'Source Code Pro', monospace;
+}
+
+
+code a:link:not(:hover), .summary-table div > code > a:not(:hover) {
+    color: #434c5d;
+    border-bottom: 1px solid #b4b4b4;
+}
+
+main a[href*="://"]::after {
+    display: none;
+}
+
+/* Search results */
+ul.ui-autocomplete li {
+    background: white;
+    color: #434c5d;
+    font-family: 'Roboto'
+}

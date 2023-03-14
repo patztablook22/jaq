@@ -19,19 +19,26 @@ import java.util.Arrays;
  * Uses the {@link io.github.patztablook22.jaq.backends.lingebra lingebra} 
  * package to perform the quantum transformations.
  *
- * Note that the dimension of the underlying state Hilbert space grows
- * exponentially with the number of qubits. Specifically,
- * \(
- *      \mathop{dim} \mathbf H = 2^N
- * \)
+ * <p>
+ *   Note that the dimension of the underlying state Hilbert space grows
+ *   exponentially with the number of qubits. Specifically,
+ *   \(
+ *        \mathop{dim} \mathbf H = 2^N
+ *   \)
  *
- * where {@code N} is the number of qubits.
- *
+ *   where {@code N} is the number of qubits. This renders simulating
+ *   quantum circuits with too many qubits intractable, as the program
+ *   runs out of memory or the computations take too much time.
+ * </p>
  *
  * */
 public class SimpleSimulator implements Qvm {
 
-    Random random;
+    /**
+     * The internal randomness generator.
+     *
+     * */
+    private Random random;
 
     /**
      * Constructs a {@code SimpleSimulator} with the default
@@ -65,12 +72,60 @@ public class SimpleSimulator implements Qvm {
         return worker.run(shots);
     }
 
+    /**
+     * Reusable single Qcircuit execution worker.
+     *
+     * */
     private class Worker extends Qflow {
+
+        /**
+         * Complex vector representing the quantum system's global state.
+         *
+         * */
         private Ket state;
+
+        /**
+         * The process' classical register.
+         *
+         * */
         private byte[] classical;
 
+        /**
+         * Constructs a Worker for given {@code Qcircuit}.
+         *
+         * @param circuit underlying Qcircuit
+         *
+         * */
         public Worker(Qcircuit circuit) {
             super(circuit);
+        }
+
+        /**
+         * Runs the Qcircuit once, returns a copy of the resulting
+         * classical register.
+         *
+         * @return resulting classical register copy
+         *
+         * */
+        public byte[] run() {
+            flow();
+            return classical.clone();
+        }
+
+        /**
+         * Runs the Qcircuit {@code shots} times, 
+         * returns copies of the resulting
+         * classical registers as a 2D byte array.
+         *
+         * @param shots the number of execution repetitions
+         * @return resulting classical registers copy
+         *
+         * */
+        public byte[][] run(int shots) {
+            byte[][] data = new byte[shots][];
+            for (int i = 0; i < shots; i++)
+                data[i] = run();
+            return data;
         }
 
         @Override
@@ -158,7 +213,7 @@ public class SimpleSimulator implements Qvm {
         }
 
         @Override
-        protected void before() {
+        public void flow() {
             if (state == null) {
                 int stateDim = 1 << getCircuit().qubits();
 
@@ -169,14 +224,22 @@ public class SimpleSimulator implements Qvm {
                 Arrays.fill(classical, (byte) 0);
             }
             state.getReal()[0] = 1;
+            super.flow();
         }
 
-        @Override
-        protected byte[] returnData() {
-            return classical.clone();
-        }
-
-        private Iterable<Integer> marginalIndices(int qubit, int basis) {
+        /**
+         * Returns a lazy iterable returning the indices
+         * of all global states in which {@code qubit} 
+         * has the value {@code value}. Meant for a direct
+         * use in for cycles for cleaner logic code.
+         *
+         * @param qubit the desired qubit
+         * @param value the qubit's value
+         *
+         * @return iterable over the specified global state indices
+         *
+         * */
+        private Iterable<Integer> marginalIndices(int qubit, int value) {
             return new Iterable<Integer>() {
 
                 @Override
@@ -195,7 +258,7 @@ public class SimpleSimulator implements Qvm {
                                  */
 
                                 int digit = (iter >> (getCircuit().qubits() - qubit - 1)) & 1;
-                                if (digit == basis)
+                                if (digit == value)
                                     break;
 
                                 iter++;
@@ -220,6 +283,10 @@ public class SimpleSimulator implements Qvm {
         }
     }
 
+    /**
+     * Pre-cached {@link io.github.patztablook22.jaq.nodes.Hadamard}
+     * gate kernel.
+     * */
     private static SparseOperator hadamardKernel;
 
     static {

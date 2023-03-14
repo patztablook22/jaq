@@ -17,8 +17,7 @@ import java.util.HashMap;
  *   the initializer block:
  * </p>
  *
- * <pre>
- *
+ * <pre><code class="language-java">
  *    var circuit = new Qcircuit() {{
  *  
  *        /* superposition &#42;/
@@ -32,17 +31,15 @@ import java.util.HashMap;
  *        measure(1, 1);
  *
  *    }};
- *
- * </pre>
+ * </code></pre>
  *
  * <p> 
- *   For a more fine control, it can be simply inherited by a named subclass,
+ *   For a more fine control, {@code Qcircuit} can be simply inherited by a named subclass,
  *   which can e.g. automate the construction of the quantum circuit based on
  *   some parameters:
  * </p>
  *
- * <pre>
- *
+ * <pre><code class="language-java">
  *    class MyCircuit extends Qcircuit {
  *        public MyCircuit(int qubits) {
  *
@@ -53,28 +50,37 @@ import java.util.HashMap;
  *
  *        }
  *    }
- * 
- * </pre>
+ * </code></pre>
+ *
+ * <p>
+ *   And later in the code:
+ * </p>
+ *
+ * <pre><code class="language-java">
+ *    var circuit = new MyCircuit(16);
+ *    Qvm backend = /* ... &#42;/;
+ *    backend.run(circuit); // etc.
+ * </code></pre>
  *
  * <p>
  *   For easy debugging, use the {@link #toString()} method, which
  *   generates textual quantum circuit diagram visualizations:
  * </p>
  *
- * <pre>
+ * <pre><code class="java">
  *    System.out.println(circuit);  // circuit from the first example
- * </pre>
+ * </code></pre>
  *
  * <p>
- *     Output:
+ *     Output for the first example:
  * </p>
  *
- * <pre>
+ * <pre><code class="plaintext">
  *    q0:  ─H─┬─M───
  *    q1:  ───+─║─M─
  *    c0:  ═════╚═║═
  *    c1:  ═══════╚═
- * </pre>
+ * </code></pre>
  *
  * */
 public class Qcircuit {
@@ -111,9 +117,11 @@ public class Qcircuit {
     /**
      * Returns a string representation of the quantum circuit's diagram.
      *
-     * Example output:
+     * <p>
+     *   Example output:
+     * </p>
      *
-     * <pre>
+     * <pre><code class="plaintext">
      *    q0:  ─H───────────────────┌──────────┐─
      *    q1:  ─H─Rx─┬─X────────────┤0  Inner2 ├─
      *    q2:  ─H────┊─┬────────M─X─┤1         ├─
@@ -122,7 +130,7 @@ public class Qcircuit {
      *    q5:  ─┤0  InnerA... ├─║────────────────
      *    c0:  ═╡0            ╞═║════════════════
      *    c1:  ═└─────────────┘═╚════════════════
-     * </pre>
+     * </code></pre>
      *
      * @return text-based quantum circuit diagram
      *
@@ -164,6 +172,18 @@ public class Qcircuit {
         return nodesList.size();
     }
 
+    /**
+     * Lets the {@code Qcircuit} know a given qubit is being accessed.
+     * Throws IndexOutOfBoundsException if accessing negative indices
+     * or when accessing indices beyond the size of the quantum register
+     * if its size is fixed. Otherwise it potentially adjusts the
+     * register size.
+     *
+     * @param q qubit to check
+     *
+     * @see Qcircuit#registersFixed
+     *
+     * */
     private void checkQubitRegisterBounds(int q) {
         if (q < 0)
             throw new IndexOutOfBoundsException();
@@ -175,6 +195,18 @@ public class Qcircuit {
             qRegister = Math.max(qRegister, q + 1);
     }
 
+    /**
+     * Lets the {@code Qcircuit} know a given classical bit is being accessed.
+     * Throws IndexOutOfBoundsException if accessing negative indices
+     * or when accessing indices beyond the size of the classical register
+     * if its size is fixed. Otherwise it potentially adjusts the
+     * register size.
+     *
+     * @param c classical bit to check
+     *
+     * @see Qcircuit#registersFixed
+     *
+     * */
     private void checkCbitRegisterBounds(int c) {
         if (c < 0)
             throw new IndexOutOfBoundsException();
@@ -191,6 +223,24 @@ public class Qcircuit {
      * Adds the {@link io.github.patztablook22.jaq.nodes.Hadamard Hadamard} 
      * gate acting individually on the given qubits.
      *
+     * <p>
+     *   Example usage:
+     * </p>
+     *
+     * <pre><code class="language-java">
+     *    var circuit = new Qcircuit() {{
+     *        /* ... &#42;/
+     *
+     *        hadamard(2, 4);
+     *
+     *        /* equivalent to &#42;/
+     *        hadamard(2);
+     *        hadamard(4);
+     *
+     *        /* ... &#42;/
+     *    }};
+     * </code></pre>
+     *
      * @param qubits individual gate operands
      *
      * */
@@ -205,6 +255,24 @@ public class Qcircuit {
      * Adds the {@link io.github.patztablook22.jaq.nodes.Cnot CNOT} 
      * (Controlled-NOT) controlled by {@code controlQubit} and
      * acting on {@code targetQubit}.
+     *
+     * <p>
+     *   Example usage:
+     * </p>
+     *
+     * <pre><code class="language-java">
+     *    var circuit = new Qcircuit() {{
+     *        /* ... &#42;/
+     *
+     *        /*
+     *         * based on the third qubit,
+     *         * negate the first one
+     *         &#42;/
+     *        cnot(2, 0);
+     *
+     *        /* ... &#42;/
+     *    }};
+     * </code></pre>
      *
      * @param controlQubit the control qubit
      * @param targetQubit the target qubit
@@ -233,6 +301,24 @@ public class Qcircuit {
      * Adds the {@link io.github.patztablook22.jaq.nodes.PauliX PauliX} 
      * gate acting individually on the given qubits.
      *
+     * <p>
+     *   Example usage:
+     * </p>
+     *
+     * <pre><code class="language-java">
+     *    var circuit = new Qcircuit() {{
+     *        /* ... &#42;/
+     *
+     *        pauliX(3, 1);
+     *
+     *        /* equivalent to &#42;/
+     *        pauliX(3);
+     *        pauliX(1);
+     *
+     *        /* ... &#42;/
+     *    }};
+     * </code></pre>
+     *
      * @param qubits individual gate operands
      *
      * */
@@ -255,6 +341,49 @@ public class Qcircuit {
      * correspond to the size of the quantum and classical register
      * of the nested circuit.
      *
+     * <p>
+     *   Example usage:
+     * </p>
+     *
+     * <pre><code class="language-java">
+     *    class UniformSuperposition extends Qcircuit {
+     *        public UniformSuperposition(int qubits) {
+     *            for (int i = 0; i &lt; qubits; i++)
+     *                hadamard(i);
+     *        }
+     *    }
+     *
+     *    /* later &#42;/
+     *
+     *    var circuit = new Qcircuit() {{
+     *        apply(new UniformSuperposition(5),
+     *              new int[] {3, 7, 2, 4, 8},
+     *              new int[] {}
+     *        );
+     *
+     *        measure(3, 0);
+     *    }};
+     *
+     *    System.out.println(circuit);
+     * </code></pre>
+     *
+     * <p>
+     *   Output:
+     * </p>
+     *
+     * <pre><code class="plaintext">
+     *    q0:  ─────────────────────────────
+     *    q1:  ─┌───────────────────────┐───
+     *    q2:  ─┤2  UniformSuperposi... ├───
+     *    q3:  ─┤0                      ├─M─
+     *    q4:  ─┤3                      ├─║─
+     *    q5:  ─│                       │─║─
+     *    q6:  ─│                       │─║─
+     *    q7:  ─┤1                      ├─║─
+     *    q8:  ─┤4                      ├─║─
+     *    c0:  ═└───────────────────────┘═╚═
+     * </code></pre>
+     *
      * @param other the quantum circuit to nest into the current one
      * @param qubits qubits to inherit by the inner quantum register
      * @param cbits classical bits to inherit by the inner classical register
@@ -270,6 +399,25 @@ public class Qcircuit {
      * Adds the {@link io.github.patztablook22.jaq.nodes.Measure Measure}
      * operation.
      *
+     * <p>
+     *   Example usage:
+     * </p>
+     *
+     * <pre><code class="language-java">
+     *    var circuit = new Qcircuit() {{
+     *        /* ... &#42;/
+     *
+     *        /*
+     *         * measure the second qubit
+     *         * and store the results in the
+     *         * first classical bit
+     *         &#42;/
+     *        measure(1, 0);
+     *
+     *        /* ... &#42;/
+     *    }};
+     * </code></pre>
+     *
      * @param sourceQubit qubit to measure
      * @param targetCbit classical bit to store the measurement into
      *
@@ -284,7 +432,20 @@ public class Qcircuit {
      * Sets the name of the Qcircuit.
      * Useful for debugging and other inspection.
      *
+     * <p>
+     *   Example usage:
+     * </p>
+     *
+     * <pre><code class="language-java">
+     *    var circuit = new Qcircuit() {{
+     *        setName("MyCircuit");
+     *    
+     *        /* ... &#42;/
+     *    }};
+     * </code></pre>
+     *
      * @param name name
+     * @see #getName()
      *
      * */
     protected void setName(String name) {
@@ -303,9 +464,32 @@ public class Qcircuit {
 
     /**
      * Returns the Qcircuit's name.
-     *
      * If the name wasn't set explicitly, the class name is used.
+     * Useful for debugging and other inspection.
+     * 
+     * <p>
+     *   Example usage:
+     * </p>
      *
+     * <pre><code class="language-java">
+     *    class MyCircuit extends Qcircuit {{
+     *    }};
+     *
+     *    /* later &#42;/
+     *
+     *    var circuit = new MyCircuit();
+     *    System.out.println(circuit.getName());
+     * </code></pre>
+     *
+     * <p>
+     *   Output:
+     * </p>
+     *
+     * <pre><code class="plaintext">
+     *    MyCircuit
+     * </code></pre>
+     *
+     * @see #setName(String)
      * @see Object#getClass()
      * @see Class#getSimpleName()
      *
@@ -319,9 +503,45 @@ public class Qcircuit {
             return name;
     }
 
+    /** 
+     * The quantum register size.
+     *
+     * @see Qcircuit#registersFixed
+     *
+     * */
     private int qRegister = 0;
+
+    /** 
+     * The classical register size.
+     *
+     * @see Qcircuit#registersFixed
+     *
+     * */
     private int cRegister = 0;
+
+    /** 
+     * If true, both quantum and classical registers are not allowed
+     * to grow or shrink in size. If false, their sizes can be modified
+     * freely.
+     *
+     * @see Qcircuit#qRegister
+     * @see Qcircuit#cRegister
+     *
+     * */
     private boolean registersFixed = false;
+
+    /**
+     * The list of the {@code Qcircuit}'s {@link Qnode Qnodes}.
+     *
+     * */
     private List<Qnode> nodesList = new ArrayList<>();
+
+    /**
+     * The {@code Qcircuit}'s name, if not default.
+     *
+     * @see Qcircuit#getName
+     * @see Qcircuit#setName(String)
+     *
+     * */
     private String name;
 }

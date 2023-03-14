@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk&family=Roboto&family=Source+Code+Pro&display=swap');
+
+body, p, h1, h2, h3, a, i, b, u, table, tr, td, th, div, span,
+div.block {
+    /* font-family: 'Open Sans', sans-serif; */
+    font-family: 'Hanken Grotesk', sans-serif;
+}
+

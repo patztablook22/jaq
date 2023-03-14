@@ -32,6 +32,11 @@ import io.github.patztablook22.jaq.Qgate;
  *
  * */
 public class PauliX implements Qgate {
+
+    /**
+     * The underlying qubit.
+     *
+     * */
     private int qubit;
 
     /**

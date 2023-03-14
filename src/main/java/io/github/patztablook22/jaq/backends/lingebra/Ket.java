@@ -12,7 +12,18 @@ import java.util.Arrays;
  *
  * */
 public class Ket {
-    private float[] real, imag;
+
+    /**
+     * The real coordinate components of the vector.
+     *
+     * */
+    private float[] real;
+
+    /**
+     * The imaginary coordinate components of the vector.
+     *
+     * */
+    private float[] imag;
 
     /**
      * Constructs a ket initialized to the zero vector \( 0 \).
@@ -123,5 +134,4 @@ public class Ket {
             imag[i] /= norm;
         }
     }
-
 }

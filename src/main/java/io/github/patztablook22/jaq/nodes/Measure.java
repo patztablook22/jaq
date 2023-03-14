@@ -29,7 +29,7 @@ import io.github.patztablook22.jaq.Qop;
  *          \ket{\psi} &amp;= \sum_{s=0}^{2^N - 1} \lambda_s
  *          \bigotimes_{k=0}^{N-1} \ket{b_k^{(s)}} \\
  *          \\
- *          \lambda_s &amp;= \alpha_s e^{\phi_s}
+ *          \lambda_s &amp;= \alpha_s e^{i\phi_s}
  *   \end{align}
  *   where \( \lambda_s \) are the coordinates of the state with respect to
  *   the computational basis, \( \alpha_s \) are the corresponding amplitudes
@@ -67,17 +67,44 @@ import io.github.patztablook22.jaq.Qop;
  *
  * */
 public class Measure implements Qop {
-    private int source, target;
 
+    /**
+     * The source qubit.
+     *
+     * */
+    private int source;
+
+    /**
+     * The target classical bit.
+     *
+     * */
+    private int target;
+
+    /**
+     * Constructs the node for given {@code source} and {@code target} values.
+     *
+     * */
     public Measure(int source, int target) {
         this.source = source;
         this.target = target;
     }
 
+    /**
+     * Returns the source qubit.
+     *
+     * @return the source qubit
+     *
+     * */
     public int getSource() {
         return source;
     }
 
+    /**
+     * Returns the target classical bit.
+     *
+     * @return the target classical bit
+     *
+     * */
     public int getTarget() {
         return target;
     }

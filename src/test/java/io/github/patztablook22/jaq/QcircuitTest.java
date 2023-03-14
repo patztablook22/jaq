@@ -7,23 +7,27 @@ import io.github.patztablook22.jaq.backends.SimpleSimulator;
 
 
 public class QcircuitTest {
+     class UniformSuperposition extends Qcircuit {
+         public UniformSuperposition(int qubits) {
+             for (int i = 0; i < qubits; i++)
+                 hadamard(i);
+         }
+     }
     @Test
     public void test() {
-        var circ = new Qcircuit() {{
-            hadamard(0);
-            cnot(0, 1);
-            measure(0, 0);
-            measure(1, 1);
-        }};
-        System.out.println(circ);
+         var circuit = new Qcircuit() {{
+             apply(new UniformSuperposition(5),
+                   new int[] {3, 7, 2, 4, 8},
+                   new int[] {}
+             );
+     
+             measure(3, 0);
+         }};
+        System.out.println(circuit);
 
         Qvm backend = new SimpleSimulator();
-        byte[][] results = backend.run(circ, 10);
-
-        for (int i = 0; i < results.length; i++) {
-            for (int j = 0; j < results[i].length; j++)
-                System.out.print(results[i][j]);
-            System.out.println();
-        }
+        for (byte b: backend.run(circuit))
+            System.out.print(b);
+        System.out.println();
     }
 }

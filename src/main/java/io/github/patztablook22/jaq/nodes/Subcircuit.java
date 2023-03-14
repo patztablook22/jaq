@@ -22,9 +22,33 @@ import java.util.Arrays;
  *
  * */
 public class Subcircuit implements Qnode {
-    private Qcircuit circuit;
-    private int[] qubits, cbits;
 
+    /**
+     *
+     * The inner circuit.
+     *
+     * */
+    private Qcircuit circuit;
+
+    /**
+     * Qubits to inherit from the outer circuit.
+     *
+     * */
+    private int[] qubits;
+
+    /**
+     * Classical bits to inherit from the outer circuit.
+     *
+     * */
+    private int[] cbits;
+
+    /**
+     * Checks the number of inherited outer qubits and classical bits 
+     * corresponds to the inner circuit's register sizes.
+     *
+     * @return whether the inherited bits correspond to the inner circuit sizes
+     *
+     * */
     private boolean argsValid() {
         if (circuit.qubits() != qubits.length)
             return false;

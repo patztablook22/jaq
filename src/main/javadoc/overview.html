@@ -1,0 +1,80 @@
+<body>
+
+    <p style="text-align: center">
+        <img src="{@docRoot}/io/github/patztablook22/jaq/doc-files/jaq.png" 
+             alt="icon"
+             style="max-height: 25%">
+    </p>
+
+    <h2>Introduction</h2>
+    <p>
+        Jaq is a modular quantum computing engine for Java 
+        based on a simple life cycle:
+    </p>
+
+    <ul>
+        <li>Build a quantum circuit.</li>
+        <li>Choose a QVM (quantum virtual machine) backend.</li>
+        <li>Run the circuit.</li>
+    </ul>
+
+    <p>
+        For example:
+    </p>
+
+    <pre><code class="language-java">
+    public static void main(String[] args) {
+      
+         // Step 1. Build a quantum circuit.
+         var circ = new Qcircuit() {{
+             hadamard(0);
+             cnot(0, 1);
+             measure(1, 0);
+         }};
+      
+         // Step 2. Choose a QVM backend.
+         Qvm backend = new SimpleSimulator();
+      
+         // Step 3. Run the circuit.
+         byte[] measurements = backend.run(circ);
+    
+    }
+    </code></pre>
+
+    <p>
+        Jaq provides a convenient API for design, inspection, and composition of
+        <a href="{@docRoot}/io/github/patztablook22/jaq/Qcircuit.html">Quantum circuits</a>.
+    </p>
+
+    <p>
+        The circuits can be then run on any implementation of the 
+        <a href="{@docRoot}/io/github/patztablook22/jaq/Qvm.html">Quantum virtual machine</a>.
+        The QVM is an abstraction of a quantum computer. The backend implementing that
+        abstraction can be a custom quantum computer, a simulator, or a quantum computer
+        availble over a public service.
+    </p>
+
+    <p>
+        Jaq is designed to be as modular as possible. New backends can be implemented
+        by easily by hand. It is possible to build application-specific quantum computing
+        libraries based on Jaq, utilizing the flexible 
+        <a href="{@docRoot}/io/github/patztablook22/jaq/Qcircuit.html">Qcircuit</a> API.
+    </p>
+
+    <h2>Where to look next?</h2>
+    <ul>
+
+        <li><a href="{@docRoot}/io/github/patztablook22/jaq/Qcircuit.html">
+                Quantum circuits in Jaq
+        </a></li>
+
+        <li><a href="{@docRoot}/io/github/patztablook22/jaq/nodes/package-summary.html">
+                Supported Quantum nodes
+        </a></li>
+
+        <li><a href="{@docRoot}/io/github/patztablook22/jaq/backends/package-summary.html">
+                Implemented backends
+        </a></li>
+    </ul>
+
+</body>

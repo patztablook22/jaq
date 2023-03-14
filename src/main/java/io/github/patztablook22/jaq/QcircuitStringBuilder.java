@@ -4,16 +4,51 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * Generator of string diagram representations for 
+ * {@link Qcircuit Qcircuits}. Intended to be used
+ * internally by {@link Qcircuit#toString()}
+ *
+ * @see QnodeStringBuilder
+ * @see Qcircuit#toString()
+ *
+ * */
 class QcircuitStringBuilder {
-    Qcircuit circuit;
-    String[] verticalBlocks;
-    StringBuilder[] buffers;
 
+    /**
+     * {@link Qcircuit} the {@code QcircuitStringBuilder} is working with.
+     *
+     * */
+    private Qcircuit circuit;
 
+    /**
+     * Generated vertical blocks.
+     *
+     * */
+    private String[] verticalBlocks;
+
+    /**
+     * Line buffers.
+     *
+     * */
+    private StringBuilder[] buffers;
+
+    /**
+     * Constructs {@code QcircuitStringBuilder} for given {@link Qcircuit}.
+     *
+     * @param circuit the Qcircuit to work with
+     *
+     * */
     public QcircuitStringBuilder(Qcircuit circuit) {
         this.circuit = circuit;
     }
 
+    /**
+     * Generates and dumps into {@code verticalBlocks} the initial
+     * vertical block consisting mainly of all annotated qubits
+     * and classical bits.
+     *
+     * */
     private void generateInitialBlock() {
         var sb = new StringBuilder("\n");
         int idxPadding = Integer.toString(
@@ -36,6 +71,11 @@ class QcircuitStringBuilder {
         verticalBlocks[0] = sb.toString();
     }
 
+    /**
+     * Generates and dumps into {@code verticalBlocks} the vertical blocks
+     * corresponding to the individual Qcircuit's nodes.
+     *
+     * */
     private void generateNodeBlocks() {
         for (int i = 0; i < circuit.length(); i++) {
             var builder = new QnodeStringBuilder(circuit.nodes().get(i),
@@ -45,6 +85,13 @@ class QcircuitStringBuilder {
         }
     }
 
+    /**
+     * Generates and dumps into {@code verticalBlocks} the terminal 
+     * vertical block. 
+     *
+     * Essentially a padding making sure the formatting is right.
+     *
+     * */
     private void generateTerminalBlock() {
         var sb = new StringBuilder();
         for (int i = 0; i < 2 + circuit.qubits() + circuit.cbits(); i++)
@@ -52,6 +99,11 @@ class QcircuitStringBuilder {
         verticalBlocks[verticalBlocks.length - 1] = sb.toString();
     }
 
+    /**
+     * Generates and dumps into {@code verticalBlocks} all veritcal blocks
+     * for the given Qcircuit.
+     *
+     * */
     private void generateVerticalBlocks() {
         verticalBlocks = new String[2 + circuit.length()];
         generateInitialBlock();
@@ -59,6 +111,15 @@ class QcircuitStringBuilder {
         generateTerminalBlock();
     }
 
+    /**
+     * Adds given verticalBlock to the end of the currently concatenated
+     * verticalBlocks in {@code buffers} in a compact way. Namely the
+     * buffers are padded by the smalles amount necessary to guarantee
+     * consistency of the non-empty lines of the block being added. 
+     *
+     * @param block block to add
+     *
+     * */
     private void addVerticalBlock(String block) {
         String[] lines = block.split("\\n");
         int padding = 0;
@@ -86,6 +147,11 @@ class QcircuitStringBuilder {
         }
     }
 
+    /**
+     * Concatenates corresponding lines of all {@code verticalBlocks}
+     * in a compact way. Dumps the result incrementlly into {@code buffers}.
+     *
+     * */
     private void concatenateVerticalBlocks() {
         buffers = new StringBuilder[circuit.qubits() + circuit.cbits() + 2];
         for (int i = 0; i < buffers.length; i++) 
@@ -95,6 +161,12 @@ class QcircuitStringBuilder {
             addVerticalBlock(block);
     }
 
+    /**
+     * Invokes the String building process.
+     *
+     * @return the built String representation
+     *
+     * */
     public String build() {
         generateVerticalBlocks();
         concatenateVerticalBlocks();

@@ -12,9 +12,37 @@ import java.util.Arrays;
  *
  * */
 public class SparseOperator {
+
+    /**
+     *
+     * Dimension of the Hilbert space.
+     *
+     * */
     int dim;
-    int[] storedRows, storedCols;
-    float[] storedReals, storedImags;
+
+    /**
+     * Rows of the sparsely stored values.
+     *
+     * */
+    int[] storedRows;
+
+    /**
+     * Columns of the sparsely stored values.
+     *
+     * */
+    int[] storedCols;
+
+    /**
+     * Real components of the sparsely stored values.
+     *
+     * */
+    float[] storedReals;
+
+    /**
+     * Imaginary components of the sparsely stored values.
+     *
+     * */
+    float [] storedImags;
 
     /**
      * Constructs an operator from a flattened dense matrix representation.

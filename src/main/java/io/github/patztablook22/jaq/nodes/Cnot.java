@@ -4,7 +4,15 @@ import io.github.patztablook22.jaq.Qgate;
 
 
 /**
- * The Controlled-NOT (CNOT) gate.
+ * The Controlled-NOT (CNOT) gate:
+ * \[
+ *    \mathop{CNOT} = \begin{pmatrix}
+ *                        1 &amp; 0 &amp; 0 &amp; 0 \\
+ *                        0 &amp; 1 &amp; 0 &amp; 0 \\
+ *                        0 &amp; 0 &amp; 0 &amp; 1 \\
+ *                        0 &amp; 0 &amp; 1 &amp; 0 \\
+ *                    \end{pmatrix}
+ * \]
  *
  * <p>
  *   Leaves the {@code target} qubit unchanged when the {@code control} qubit is 0.
@@ -12,16 +20,8 @@ import io.github.patztablook22.jaq.Qgate;
  * </p>
  *
  * <p>
- *   In a 2-qubit system, it can be represented by the following unitary matrix, 
- *   the first qubit being the {@code control} one:
- *   \[
- *      \mathop{CNOT} = \begin{pmatrix}
- *                          1 &amp; 0 &amp; 0 &amp; 0 \\
- *                          0 &amp; 1 &amp; 0 &amp; 0 \\
- *                          0 &amp; 0 &amp; 0 &amp; 1 \\
- *                          0 &amp; 0 &amp; 1 &amp; 0 \\
- *                      \end{pmatrix}
- *   \]
+ *   In a 2-qubit system, it can be represented by the above unitary matrix, 
+ *   the first qubit being the {@code control} one.
  * </p>
  *
  * <p>
@@ -72,7 +72,18 @@ import io.github.patztablook22.jaq.Qgate;
  *
  * */
 public class Cnot implements Qgate {
-    private int control, target;
+
+    /**
+     * The control qubit.
+     *
+     * */
+    private int control;
+
+    /**
+     * The target qubit.
+     *
+     * */
+    private int target;
 
     /**
      * Constructs a CNOT gate controlled by and acting on
@@ -90,7 +101,7 @@ public class Cnot implements Qgate {
     /**
      * Returns the control qubit.
      *
-     * @return the control qubit.
+     * @return the control qubit
      *
      * */
     public int getControl() {
@@ -100,7 +111,7 @@ public class Cnot implements Qgate {
     /**
      * Returns the target qubit.
      *
-     * @return the target qubit.
+     * @return the target qubit
      *
      * */
     public int getTarget() {
