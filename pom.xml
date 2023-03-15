@@ -9,6 +9,17 @@
   <name>jaq</name>
   <url>http://maven.apache.org</url>
 
+  <licenses>
+      <license>
+          <name>MIT License</name>
+          <url>https://mit-license.org</url>
+      </license>
+  </licenses>
+
+  <scm>
+      <connection>scm:git:git@github.com:patztablook22/jaq.git</connection>
+  </scm>
+
   <properties>
     <java.version>11</java.version>
     <maven.compiler.source>11</maven.compiler.source>
