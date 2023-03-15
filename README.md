@@ -117,3 +117,19 @@ Jaq quantum circuits are backend-agnostic. A `Qvm` implementation is expected to
 ### Implementations of `Qvm`:
 
 - `SimpleSimulator` - simulates the quantum circuit using sparse linear algebra on the CPU
+
+## Documentation
+
+Full API and development documentation is provided through Javadoc. 
+
+To generate API-only documentation, run the following code after cloning the repo:
+
+```sh
+mvn javadoc:javadoc
+```
+
+To generate development documentation that includes private methods and package-only classes, run
+
+```sh
+mvn javadoc:javadoc -private
+```
