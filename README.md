@@ -1,6 +1,11 @@
-# Jaq
 
-Quantum computing engine for Java based on a simple life cycle:
+<p align="center">
+  <img src="src/main/java/io/github/patztablook22/jaq/doc-files/jaq.png" label="Jaq">
+</p>
+
+## About
+
+Jaq is a Quantum computing engine for Java based on a simple life cycle:
 
 1. Build a quantum circuit.
 2. Choose a QVM (quantum virtual machine) backend.
